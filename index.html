@@ -55,6 +55,7 @@
     <script type="text/javascript">
         var infoWindow;
         var lastInfoW = 0;
+        var theCenter;
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
@@ -216,6 +217,9 @@
                                                 index: index
                                             }
                                         );
+                                        if (index == 0) {
+                                            theCenter = latLng;
+                                        }
                                     } else {
                                         alert("address not found: " + address);
                                     }
@@ -228,6 +232,8 @@
                             });
                         } else {
                             hideSpinner();
+                            google.maps.event.trigger(map, 'resize');
+                            map.setCenter(theCenter);
                         }
                     }
 
@@ -255,7 +261,7 @@
             <br>
             <span>allowed types: csv,tsv</span>
             <input type="file" name="file" id="theFile" accept=".csv,.tsv">
-            <input type="text" name="city" id="city" placeholder="State, ex: New York">
+            <input type="text" name="city" id="city" placeholder="City/State/Country, ex: New York">
             <input type="submit" name="next" class="button" value="Next">
             <input type="button" class="next hidden">
         </form>
