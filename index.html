@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.2/jquery.easing.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.2/jquery.easing.min.js"
+            type="text/javascript"></script>
     <script src="jquery-multi-step-form.js" type="text/javascript"></script>
     <link href="jquery-multi-step-form.css" media="screen" rel="stylesheet" type="text/css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.4/papaparse.min.js"></script>
@@ -153,6 +154,19 @@
                                             map = new google.maps.Map(document.getElementById('map-canvas'), {
                                                 zoom: 14,
                                                 center: latLng
+                                            });
+
+                                            new google.maps.FusionTablesLayer({
+                                                query: {
+                                                    select: '\'geometry\'',
+                                                    from: '1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa'
+                                                }
+                                                , map: map
+                                                , styles: [{
+                                                    polygonOptions: {
+                                                        fillOpacity: 0.2
+                                                    }
+                                                }]
                                             });
                                         }
                                         new CustomMarker(
