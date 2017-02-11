@@ -184,7 +184,7 @@
                                                 query: {
                                                     select: '\'geometry\'',
                                                     from: '1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa',
-                                                    where: "'Geographic Name' CONTAINS IGNORING CASE '" + city + "'"
+                                                    where: "'Geographic Name' CONTAINS IGNORING CASE '" + results[0].address_components[results[0].address_components.length - 2].long_name + "'"
                                                 }
                                                 , map: map
                                                 , styles: [{
