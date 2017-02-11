@@ -183,7 +183,8 @@
                                             var fusionTablesLayer = new google.maps.FusionTablesLayer({
                                                 query: {
                                                     select: '\'geometry\'',
-                                                    from: '1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa'
+                                                    from: '1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa',
+                                                    where: "'Geographic Name' CONTAINS IGNORING CASE '" + city + "'"
                                                 }
                                                 , map: map
                                                 , styles: [{
@@ -254,7 +255,7 @@
             <br>
             <span>allowed types: csv,tsv</span>
             <input type="file" name="file" id="theFile" accept=".csv,.tsv">
-            <input type="text" name="city" id="city" placeholder="City/State">
+            <input type="text" name="city" id="city" placeholder="State, ex: New York">
             <input type="submit" name="next" class="button" value="Next">
             <input type="button" class="next hidden">
         </form>
