@@ -53,6 +53,7 @@
     <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7qBJy-453qS9XBAA8ksudZJCxhG6kB10"></script>
     <script type="text/javascript">
+        var infoWindow;
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
@@ -71,6 +72,7 @@
         function CustomMarker(latLng, map, args) {
             this.latlng = latLng;
             this.args = args;
+            this.theMap = map;
             this.setMap(map);
         }
 
@@ -92,7 +94,7 @@
                 div.style.cursor = 'pointer';
                 div.style.background = 'white';
 
-                var innerHTML = '<table  class="table table-hover" style="margin: 0px">';
+                var innerHTML = '<table  class="table table-hover table-responsive" style="margin: 0px;word-wrap: break-word;font-size: xx-small;">';
                 var dataI = self.args.data[self.args.index];
                 for (var i = 1; i < dataI.length; i++) {
                     innerHTML += '<tr><td>' + dataI[i] + '</td></tr>';
@@ -102,6 +104,17 @@
 
                 var panes = this.getPanes();
                 panes.overlayImage.appendChild(div);
+
+                google.maps.event.addDomListener(div, "click", function (event) {
+                    if (infoWindow) {
+                        infoWindow.close();
+                    }
+                    infoWindow = new google.maps.InfoWindow({
+                        content: JSON.stringify(dataI)
+                    });
+                    infoWindow.open(self.theMap, self);
+
+                });
             }
 
             var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
