@@ -54,6 +54,7 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7qBJy-453qS9XBAA8ksudZJCxhG6kB10"></script>
     <script type="text/javascript">
         var infoWindow;
+        var lastInfoW = 0;
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
@@ -110,10 +111,11 @@
                         infoWindow.close();
                     }
                     infoWindow = new google.maps.InfoWindow({
-                        content: JSON.stringify(dataI)
+                        content: dataI[0]
                     });
+                    infoWindow.setPosition(event.latLng);
                     infoWindow.open(self.theMap, self);
-
+                    lastInfoW = Date.now();
                 });
             }
 
@@ -143,10 +145,11 @@
                 return false;
             }
             showSpinner();
-            $("#wizard .next").trigger("click");
 
             Papa.parse($("#theFile")[0].files[0], {
                 complete: function (results) {
+                    $("#wizard .next").trigger("click");
+
                     var map;
                     var geocoder = new google.maps.Geocoder;
 
@@ -165,11 +168,19 @@
                                         );
                                         if (!map) {
                                             map = new google.maps.Map(document.getElementById('map-canvas'), {
-                                                zoom: 14,
-                                                center: latLng
+                                                zoom: 9,
+                                                center: latLng,
+                                                fullscreenControl: true,
+                                                rotateControl: true,
+                                                streetViewControl: true,
+                                                scaleControl: true,
+                                                mapTypeControl: true,
+                                                overviewMapControl: true,
+                                                panControl: true,
+                                                zoomControl: true
                                             });
 
-                                            new google.maps.FusionTablesLayer({
+                                            var fusionTablesLayer = new google.maps.FusionTablesLayer({
                                                 query: {
                                                     select: '\'geometry\'',
                                                     from: '1xdysxZ94uUFIit9eXmnw1fYc6VcQiXhceFd_CVKa'
@@ -177,9 +188,23 @@
                                                 , map: map
                                                 , styles: [{
                                                     polygonOptions: {
-                                                        fillOpacity: 0.2
+                                                        fillOpacity: 0.25
                                                     }
-                                                }]
+                                                }], suppressInfoWindows: true
+
+                                            });
+                                            google.maps.event.addListener(fusionTablesLayer, "click", function (event) {
+                                                if (!infoWindow || !infoWindow.getMap() || Date.now() - lastInfoW >= 1000) {
+                                                    if (infoWindow) {
+                                                        infoWindow.close();
+                                                    }
+                                                    infoWindow = new google.maps.InfoWindow({
+                                                        content: event.row['Geographic Name'].value
+                                                    });
+                                                    infoWindow.setPosition(event.latLng);
+                                                    infoWindow.open(map);
+                                                }
+                                                lastInfoW = 0;
                                             });
                                         }
                                         new CustomMarker(
