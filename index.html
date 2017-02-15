@@ -126,6 +126,11 @@
                 div.style.left = (point.x - 10) + 'px';
                 div.style.top = (point.y - 20) + 'px';
             }
+            if(self.theMap.getZoom()>=8)
+                div.style.display = 'block';
+            else
+                div.style.display = 'none';
+
         };
 
         CustomMarker.prototype.remove = function () {
